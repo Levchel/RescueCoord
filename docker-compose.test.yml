@@ -1,0 +1,21 @@
+# docker-compose.test.yml — Testing overrides
+# Usage: docker compose -f docker-compose.yml -f docker-compose.test.yml up --build
+services:
+  coordination_service:
+    environment:
+      APP_ENV: testing
+      DATABASE_URL: postgresql+asyncpg://coord_user:coord_pass@coord_db:5432/coordination_db
+      DATABASE_ECHO: "false"
+      LOG_LEVEL: WARNING
+      DEBUG: "false"
+      CORS_ORIGINS: "*"
+      MONITORING_SERVICE_URL: http://monitoring_service:8000
+
+  monitoring_service:
+    environment:
+      APP_ENV: testing
+      DATABASE_URL: postgresql+asyncpg://monitor_user:monitor_pass@monitoring_db:5432/monitoring_db
+      DATABASE_ECHO: "false"
+      LOG_LEVEL: WARNING
+      DEBUG: "false"
+      CORS_ORIGINS: "*"

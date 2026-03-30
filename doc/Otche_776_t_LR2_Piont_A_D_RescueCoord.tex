@@ -1,0 +1,1191 @@
+\documentclass[12pt,a4paper]{article}
+
+% ─── Кодировка и язык ─────────────────────────────────────────────────────────
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian,english]{babel}
+
+% ─── Геометрия страницы ───────────────────────────────────────────────────────
+\usepackage[
+    left=30mm,
+    right=15mm,
+    top=20mm,
+    bottom=20mm
+]{geometry}
+
+% ─── Основные пакеты ──────────────────────────────────────────────────────────
+\usepackage{indentfirst}        % Отступ первого абзаца
+\usepackage{setspace}           % Межстрочный интервал
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+
+% ─── Настройка кода ───────────────────────────────────────────────────────────
+\definecolor{codebg}{RGB}{248,248,248}
+\definecolor{codeborder}{RGB}{200,200,200}
+\definecolor{codegreen}{RGB}{0,128,0}
+\definecolor{codered}{RGB}{180,0,0}
+\definecolor{codeblue}{RGB}{0,0,200}
+\definecolor{codegray}{RGB}{100,100,100}
+
+\lstdefinestyle{python}{
+    language=Python,
+    backgroundcolor=\color{codebg},
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{codeblue}\bfseries,
+    commentstyle=\color{codegreen}\itshape,
+    stringstyle=\color{codered},
+    numberstyle=\tiny\color{codegray},
+    numbers=left,
+    numbersep=8pt,
+    frame=single,
+    rulecolor=\color{codeborder},
+    breaklines=true,
+    showstringspaces=false,
+    tabsize=4,
+    captionpos=b,
+    inputencoding=utf8,
+    extendedchars=true,
+    literate=
+        {а}{{\cyra}}1 {б}{{\cyrb}}1 {в}{{\cyrv}}1 {г}{{\cyrg}}1
+        {д}{{\cyrd}}1 {е}{{\cyre}}1 {ё}{{\cyryo}}1 {ж}{{\cyrzh}}1
+        {з}{{\cyrz}}1 {и}{{\cyri}}1 {й}{{\cyrishrt}}1 {к}{{\cyrk}}1
+        {л}{{\cyrl}}1 {м}{{\cyrm}}1 {н}{{\cyrn}}1 {о}{{\cyro}}1
+        {п}{{\cyrp}}1 {р}{{\cyrr}}1 {с}{{\cyrs}}1 {т}{{\cyrt}}1
+        {у}{{\cyru}}1 {ф}{{\cyrf}}1 {х}{{\cyrh}}1 {ц}{{\cyrc}}1
+        {ч}{{\cyrch}}1 {ш}{{\cyrsh}}1 {щ}{{\cyrshch}}1 {ъ}{{\cyrhrdsn}}1
+        {ы}{{\cyrery}}1 {ь}{{\cyrsftsn}}1 {э}{{\cyrerev}}1 {ю}{{\cyryu}}1
+        {я}{{\cyrya}}1
+        {А}{{\CYRA}}1 {Б}{{\CYRB}}1 {В}{{\CYRV}}1 {Г}{{\CYRG}}1
+        {Д}{{\CYRD}}1 {Е}{{\CYRE}}1 {Ё}{{\CYRYO}}1 {Ж}{{\CYRZH}}1
+        {З}{{\CYRZ}}1 {И}{{\CYRI}}1 {К}{{\CYRK}}1 {Л}{{\CYRL}}1
+        {М}{{\CYRM}}1 {Н}{{\CYRN}}1 {О}{{\CYRO}}1 {П}{{\CYRP}}1
+        {Р}{{\CYRR}}1 {С}{{\CYRS}}1 {Т}{{\CYRT}}1 {У}{{\CYRU}}1
+        {Ф}{{\CYRF}}1 {Х}{{\CYRH}}1 {Ц}{{\CYRC}}1 {Ч}{{\CYRCH}}1
+        {Ш}{{\CYRSH}}1 {Щ}{{\CYRSHCH}}1 {Ъ}{{\CYRHRDSN}}1 {Ы}{{\CYRERY}}1
+        {Ь}{{\CYRSFTSN}}1 {Э}{{\CYREREV}}1 {Ю}{{\CYRYU}}1 {Я}{{\CYRYA}}1,
+}
+
+\lstdefinestyle{bash}{
+    language=bash,
+    backgroundcolor=\color{codebg},
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{codeblue}\bfseries,
+    commentstyle=\color{codegreen}\itshape,
+    stringstyle=\color{codered},
+    numbers=none,
+    frame=single,
+    rulecolor=\color{codeborder},
+    breaklines=true,
+    showstringspaces=false,
+    tabsize=2,
+    captionpos=b,
+}
+
+\lstdefinestyle{yaml}{
+    language=bash,
+    backgroundcolor=\color{codebg},
+    basicstyle=\ttfamily\small,
+    commentstyle=\color{codegreen}\itshape,
+    stringstyle=\color{codered},
+    numbers=none,
+    frame=single,
+    rulecolor=\color{codeborder},
+    breaklines=true,
+    showstringspaces=false,
+    tabsize=2,
+    captionpos=b,
+}
+
+\lstset{style=python}
+
+% ─── Межстрочный интервал ─────────────────────────────────────────────────────
+\onehalfspacing
+
+% ─── Гиперссылки ──────────────────────────────────────────────────────────────
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue,
+    citecolor=black
+}
+
+% ─── Заголовки разделов ───────────────────────────────────────────────────────
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.5em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection.}{0.5em}{}
+\titleformat{\subsubsection}{\normalsize\itshape}{\thesubsubsection.}{0.5em}{}
+
+% ─── Колонтитулы ──────────────────────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ─── Подписи к листингам ──────────────────────────────────────────────────────
+\renewcommand{\lstlistingname}{Листинг}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\begin{document}
+
+% ─── Титульный лист ───────────────────────────────────────────────────────────
+\thispagestyle{empty}
+
+\begin{center}
+    \textbf{Министерство науки и высшего образования Российской Федерации}\\[4pt]
+    \textbf{Федеральное государственное бюджетное образовательное учреждение}\\
+    \textbf{высшего образования}\\[6pt]
+    \textbf{<<МИРЭА --- Российский технологический университет>>}\\[20pt]
+
+    Институт информационных технологий\\[4pt]
+    Кафедра программной инженерии\\[40pt]
+
+    {\Large \textbf{ОТЧЁТ}}\\[8pt]
+    {\large по лабораторной работе №\,2}\\[8pt]
+    {\large по дисциплине <<Разработка микросервисных приложений>>}\\[20pt]
+
+    {\LARGE \textbf{Тема: Разработка микросервисной системы координации}}\\
+    {\LARGE \textbf{спасательных операций RescueCoord}}\\[40pt]
+\end{center}
+
+\begin{flushright}
+    \begin{tabular}{rl}
+        Выполнил: & студент группы ИКБО-776 \\[3pt]
+                  & Пионт Алексей Денисович \\[10pt]
+        Проверил: & \\
+    \end{tabular}
+\end{flushright}
+
+\vfill
+
+\begin{center}
+    Москва, \the\year
+\end{center}
+
+\newpage
+
+% ─── Оглавление ───────────────────────────────────────────────────────────────
+\tableofcontents
+\newpage
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Цель работы}
+
+Целью данной лабораторной работы является разработка микросервисной системы на
+основе языка Python и фреймворка FastAPI, включающей:
+\begin{enumerate}[label=\arabic*.]
+    \item реализацию кода двух взаимодействующих микросервисов;
+    \item полную реализацию REST API для каждого сервиса;
+    \item создание модульных тестов и клиентской библиотеки (Python SDK);
+    \item разработку конфигураций для трёх окружений (разработка, тестирование, продакшен);
+    \item контейнеризацию системы с помощью Docker Compose.
+\end{enumerate}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Задание}
+
+Разработать микросервисную систему \textbf{RescueCoord} --- систему координации
+поисково-спасательных операций. Система должна включать:
+
+\begin{itemize}
+    \item \textbf{Coordination Service} --- управление миссиями, планирование
+          поисковых зон и маршрутов, переназначение задач;
+    \item \textbf{Monitoring Service} --- приём телеметрии от агентов (дронов/роботов),
+          мониторинг их состояния и генерация оповещений;
+    \item \textbf{REST API} с полным набором эндпоинтов для каждого сервиса;
+    \item \textbf{Модульные тесты} (не менее 40) с использованием pytest и AsyncClient;
+    \item \textbf{Python SDK клиент} для программного доступа к обоим сервисам;
+    \item \textbf{Три окружения}: development, testing, production с отдельными
+          конфигурационными файлами;
+    \item \textbf{Docker Compose} сборку с переопределениями для каждого окружения.
+\end{itemize}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Архитектура системы}
+
+\subsection{Общая схема}
+
+Система состоит из пяти Docker-контейнеров, объединённых в сеть
+\texttt{rescuecoord\_net}:
+
+\begin{figure}[H]
+\centering
+\begin{Verbatim}
+  ┌─────────────────────────────────────────────────────────┐
+  │                    Docker Network                        │
+  │                                                          │
+  │  ┌────────────┐    ┌──────────────────────────────┐     │
+  │  │  coord_db  │◄───│  Coordination Service :8001  │     │
+  │  │ PostgreSQL │    │  (FastAPI + SQLAlchemy)       │     │
+  │  │  port 5433 │    └──────────────┬───────────────┘     │
+  │  └────────────┘                   │ HTTP                 │
+  │                                   ▼                      │
+  │  ┌────────────┐    ┌──────────────────────────────┐     │
+  │  │monitor_db  │◄───│  Monitoring Service  :8002   │     │
+  │  │ PostgreSQL │    │  (FastAPI + SQLAlchemy)       │     │
+  │  │  port 5434 │    └──────────────────────────────┘     │
+  │  └────────────┘                   ▲                      │
+  │                                   │ nginx proxy          │
+  │                    ┌──────────────────────────────┐     │
+  │                    │    Frontend  :3000            │     │
+  │                    │   (React + Vite + TypeScript) │     │
+  │                    └──────────────────────────────┘     │
+  └─────────────────────────────────────────────────────────┘
+\end{Verbatim}
+\caption{Архитектура системы RescueCoord}
+\end{figure}
+
+\subsection{Технологический стек}
+
+\begin{table}[H]
+\centering
+\caption{Технологический стек проекта}
+\begin{tabularx}{\textwidth}{|l|X|l|}
+\hline
+\textbf{Компонент} & \textbf{Технология} & \textbf{Версия} \\
+\hline
+Язык программирования & Python & 3.12 \\
+\hline
+Веб-фреймворк & FastAPI & 0.115 \\
+\hline
+ASGI-сервер & Uvicorn & 0.34 \\
+\hline
+ORM & SQLAlchemy (async) & 2.0 \\
+\hline
+Валидация данных & Pydantic v2 + pydantic-settings & 2.x \\
+\hline
+БД (prod/dev) & PostgreSQL & 16 \\
+\hline
+БД (тесты) & SQLite (aiosqlite) & in-memory \\
+\hline
+Миграции & Alembic & 1.14 \\
+\hline
+HTTP-клиент (SDK) & HTTPX (async) & 0.28 \\
+\hline
+Тестирование & pytest + pytest-asyncio & latest \\
+\hline
+Контейнеризация & Docker + Docker Compose & 3.9 \\
+\hline
+Фронтенд & React + Vite + TypeScript & React 18 \\
+\hline
+CSS-фреймворк & Tailwind CSS v4 + shadcn/ui & 4.x \\
+\hline
+Веб-сервер (frontend) & nginx & alpine \\
+\hline
+\end{tabularx}
+\end{table}
+
+\subsection{Структура проекта}
+
+\begin{lstlisting}[style=bash, caption={Структура директорий проекта}]
+RescueCoord/
+├── coordination_service/        # Сервис координации
+│   ├── app/
+│   │   ├── api/                 # Маршруты FastAPI
+│   │   ├── models/              # SQLAlchemy ORM-модели
+│   │   ├── schemas/             # Pydantic-схемы
+│   │   ├── services/            # Бизнес-логика
+│   │   ├── config.py            # Настройки (pydantic-settings)
+│   │   ├── database.py          # Async engine + session
+│   │   └── main.py              # Точка входа FastAPI
+│   ├── tests/                   # Модульные тесты
+│   ├── .env.development
+│   ├── .env.testing
+│   ├── .env.production
+│   └── Dockerfile
+├── monitoring_service/          # Сервис мониторинга
+│   ├── app/                     # Аналогичная структура
+│   ├── tests/
+│   ├── .env.development
+│   ├── .env.testing
+│   ├── .env.production
+│   └── Dockerfile
+├── client/                      # Python SDK
+│   ├── coordination_client.py
+│   ├── monitoring_client.py
+│   └── models.py
+├── tests/                       # Интеграционные тесты
+├── frontend/                    # React-приложение
+├── docker-compose.yml           # Базовый Compose
+├── docker-compose.dev.yml       # Оверрайд: dev
+├── docker-compose.test.yml      # Оверрайд: testing
+├── docker-compose.prod.yml      # Оверрайд: production
+└── seed_agents.py               # Скрипт демонстрационных данных
+\end{lstlisting}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Реализация микросервисов}
+
+\subsection{Coordination Service}
+
+Сервис координации отвечает за управление миссиями спасательной операции:
+создание, планирование зон поиска, назначение агентов и переназначение маршрутов.
+
+\subsubsection{Модели данных}
+
+\begin{lstlisting}[caption={Модель миссии (coordination\_service/app/models/mission.py)}]
+from sqlalchemy import Integer, String, DateTime, Enum, func
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+from .enums import IncidentType, Priority, MissionStatusCoord
+
+class Base(DeclarativeBase):
+    pass
+
+class Mission(Base):
+    __tablename__ = "missions"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    incident_type: Mapped[IncidentType] = mapped_column(
+        Enum(IncidentType, name="incident_type_enum"), nullable=False
+    )
+    location: Mapped[str] = mapped_column(String(255), nullable=False)
+    priority: Mapped[Priority] = mapped_column(
+        Enum(Priority, name="priority_enum"), nullable=False
+    )
+    created_at: Mapped[DateTime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), nullable=False
+    )
+    status: Mapped[MissionStatusCoord] = mapped_column(
+        Enum(MissionStatusCoord, name="mission_status_coord_enum"),
+        nullable=False,
+        default=MissionStatusCoord.CREATED,
+    )
+    required_agents: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
+
+    zones = relationship("SearchZone", back_populates="mission", lazy="selectin")
+    routes = relationship("Route", back_populates="mission", lazy="selectin")
+\end{lstlisting}
+
+\subsubsection{Перечисления}
+
+Для обеспечения целостности данных используются перечисления:
+
+\begin{lstlisting}[caption={Перечисления coordination\_service}]
+class IncidentType(str, enum.Enum):
+    BUILDING_COLLAPSE = "BUILDING_COLLAPSE"
+    FIRE              = "FIRE"
+    INDUSTRIAL_ACCIDENT = "INDUSTRIAL_ACCIDENT"
+    FLOOD             = "FLOOD"
+    OTHER             = "OTHER"
+
+class Priority(str, enum.Enum):
+    LOW      = "LOW"
+    MEDIUM   = "MEDIUM"
+    HIGH     = "HIGH"
+    CRITICAL = "CRITICAL"
+
+class MissionStatusCoord(str, enum.Enum):
+    CREATED    = "CREATED"
+    PLANNING   = "PLANNING"
+    IN_PROGRESS = "IN_PROGRESS"
+    COMPLETED  = "COMPLETED"
+    CANCELLED  = "CANCELLED"
+\end{lstlisting}
+
+\subsubsection{Инициализация приложения}
+
+Для автоматического создания таблиц при запуске используется механизм
+\texttt{lifespan}:
+
+\begin{lstlisting}[caption={Точка входа coordination\_service/app/main.py}]
+from contextlib import asynccontextmanager
+from fastapi import FastAPI
+from .api import missions, routes, health
+from .database import engine
+from .models.mission import Base
+from .models import agent, mission, route, search_zone, task_reassignment  # noqa
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    yield
+
+app = FastAPI(
+    title="RescueCoord Coordination Service",
+    version="1.0.0",
+    lifespan=lifespan,
+)
+app.include_router(missions.router)
+app.include_router(routes.router)
+app.include_router(health.router)
+\end{lstlisting}
+
+\subsection{Monitoring Service}
+
+Сервис мониторинга принимает телеметрию от агентов, отслеживает их статус,
+генерирует оповещения и предоставляет список доступных агентов для координатора.
+
+Ключевые модели: \texttt{AgentTelemetry}, \texttt{AgentStatus}, \texttt{Alert},
+\texttt{SensorEvent}.
+
+Перечисления: \texttt{LinkStatus} (ONLINE / OFFLINE / DEGRADED),
+\texttt{HealthState} (HEALTHY / DEGRADED / CRITICAL),
+\texttt{MissionStatus} (PENDING / IN\textunderscore PROGRESS / COMPLETED / IDLE),
+\texttt{AlertSeverity} (INFO / WARNING / CRITICAL).
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Реализация API}
+
+\subsection{Coordination Service API}
+
+\begin{table}[H]
+\centering
+\caption{Эндпоинты Coordination Service (:8001)}
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{Метод} & \textbf{URI} & \textbf{Описание} \\
+\hline
+POST   & \texttt{/api/v1/missions}                     & Создать миссию \\
+\hline
+GET    & \texttt{/api/v1/missions/\{id\}}              & Получить миссию по ID \\
+\hline
+POST   & \texttt{/api/v1/missions/\{id\}/plan}         & Спланировать зоны и назначить агентов \\
+\hline
+GET    & \texttt{/api/v1/missions/\{id\}/assignments}  & Получить назначения по миссии \\
+\hline
+PATCH  & \texttt{/api/v1/routes/\{id\}/reassign}       & Переназначить маршрут другому агенту \\
+\hline
+GET    & \texttt{/health}                              & Проверка работоспособности \\
+\hline
+\end{tabularx}
+\end{table}
+
+\subsubsection{Пример реализации эндпоинта создания миссии}
+
+\begin{lstlisting}[caption={POST /api/v1/missions}]
+@router.post(
+    "/missions",
+    response_model=MissionResponse,
+    status_code=status.HTTP_201_CREATED,
+)
+async def create_mission(
+    data: MissionCreate,
+    db: AsyncSession = Depends(get_db),
+):
+    mission = await mission_service.create_mission(db, data)
+    return mission
+\end{lstlisting}
+
+\subsubsection{Схемы запроса и ответа}
+
+\begin{lstlisting}[caption={Pydantic-схема MissionCreate}]
+class MissionCreate(BaseModel):
+    incident_type: IncidentType
+    location: str = Field(..., min_length=1, max_length=255)
+    priority: Priority
+    required_agents: int = Field(default=1, ge=1, le=100)
+\end{lstlisting}
+
+\subsection{Monitoring Service API}
+
+\begin{table}[H]
+\centering
+\caption{Эндпоинты Monitoring Service (:8002)}
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{Метод} & \textbf{URI} & \textbf{Описание} \\
+\hline
+POST & \texttt{/api/v1/telemetry}             & Принять телеметрию от агента \\
+\hline
+GET  & \texttt{/api/v1/agents/\{id\}/status}  & Получить статус агента \\
+\hline
+GET  & \texttt{/api/v1/agents/available}      & Список доступных агентов \\
+\hline
+POST & \texttt{/api/v1/alerts}                & Создать оповещение \\
+\hline
+GET  & \texttt{/api/v1/alerts}                & Список всех оповещений \\
+\hline
+GET  & \texttt{/health}                       & Проверка работоспособности \\
+\hline
+\end{tabularx}
+\end{table}
+
+\subsubsection{Пример запроса к Monitoring Service}
+
+\begin{lstlisting}[style=bash, caption={Отправка телеметрии (curl)}]
+curl -X POST http://localhost:8002/api/v1/telemetry \
+  -H "Content-Type: application/json" \
+  -d '{
+    "agent_id": 1,
+    "battery_level": 85.0,
+    "link_status": "ONLINE",
+    "health_state": "HEALTHY",
+    "mission_status": "PENDING",
+    "latitude": 55.7558,
+    "longitude": 37.6173
+  }'
+\end{lstlisting}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Модульные тесты}
+
+\subsection{Стратегия тестирования}
+
+Для тестирования применялся подход изоляции: каждый тест использует
+независимую in-memory базу данных SQLite (через \texttt{aiosqlite}), что
+исключает зависимость между тестами и необходимость запуска PostgreSQL.
+
+Внешние HTTP-вызовы к смежному сервису замокированы через
+\texttt{unittest.mock.AsyncMock} и \texttt{patch}.
+
+\subsection{Конфигурация тестов (conftest.py)}
+
+\begin{lstlisting}[caption={Фикстуры coordination\_service/tests/conftest.py}]
+TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
+
+engine = create_async_engine(TEST_DATABASE_URL, echo=False)
+TestingSessionLocal = async_sessionmaker(
+    engine, class_=AsyncSession, expire_on_commit=False
+)
+
+@pytest_asyncio.fixture(autouse=True)
+async def setup_db():
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    yield
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
+
+fastapi_app.dependency_overrides[get_db] = override_get_db
+
+@pytest_asyncio.fixture
+async def client() -> AsyncGenerator[AsyncClient, None]:
+    transport = ASGITransport(app=fastapi_app)
+    async with AsyncClient(transport=transport, base_url="http://test") as ac:
+        yield ac
+\end{lstlisting}
+
+\subsection{Перечень тестовых случаев}
+
+\begin{table}[H]
+\centering
+\caption{Тесты Coordination Service}
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+\textbf{Файл / тест} & \textbf{Проверяемое поведение} \\
+\hline
+\multicolumn{2}{|l|}{\textit{test\_missions\_api.py}} \\
+\hline
+test\_create\_mission       & Успешное создание миссии, статус 201 \\
+test\_get\_mission          & Получение миссии по ID \\
+test\_get\_mission\_not\_found & 404 при несуществующем ID \\
+test\_create\_mission\_validation & 422 при недопустимом типе инцидента \\
+\hline
+\multicolumn{2}{|l|}{\textit{test\_planning\_service.py}} \\
+\hline
+test\_plan\_mission         & Планирование зон, назначение агентов \\
+test\_plan\_no\_agents      & Обработка случая при отсутствии агентов \\
+\hline
+\multicolumn{2}{|l|}{\textit{test\_routes\_api.py}} \\
+\hline
+test\_reassign\_route       & Переназначение маршрута агенту \\
+test\_reassign\_not\_found  & 404 при несуществующем маршруте \\
+\hline
+\multicolumn{2}{|l|}{\textit{test\_health.py}} \\
+\hline
+test\_health\_check         & GET /health возвращает \{status: ok\} \\
+\hline
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Тесты Monitoring Service}
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+\textbf{Файл / тест} & \textbf{Проверяемое поведение} \\
+\hline
+\multicolumn{2}{|l|}{\textit{test\_telemetry\_api.py}} \\
+\hline
+test\_receive\_telemetry    & Успешный приём телеметрии (201) \\
+test\_telemetry\_updates\_status & Статус агента обновляется после телеметрии \\
+test\_telemetry\_validation & 422 при некорректных данных \\
+\hline
+\multicolumn{2}{|l|}{\textit{test\_agents\_api.py}} \\
+\hline
+test\_get\_agent\_status    & Получение статуса агента \\
+test\_get\_available\_agents & Список агентов с link\_status=ONLINE \\
+test\_agent\_not\_found     & 404 при несуществующем агенте \\
+\hline
+\multicolumn{2}{|l|}{\textit{test\_alerts\_api.py}} \\
+\hline
+test\_create\_alert         & Создание оповещения (201) \\
+test\_list\_alerts          & Получение списка оповещений \\
+\hline
+\multicolumn{2}{|l|}{\textit{test\_health.py}} \\
+\hline
+test\_health\_check         & GET /health возвращает \{status: ok\} \\
+\hline
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Интеграционные тесты (tests/)}
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+\textbf{Файл / тест} & \textbf{Проверяемое поведение} \\
+\hline
+\multicolumn{2}{|l|}{\textit{test\_coordination\_client.py}} \\
+\hline
+test\_create\_mission       & SDK-метод create\_mission \\
+test\_plan\_mission         & SDK-метод plan\_mission \\
+test\_get\_assignments      & SDK-метод get\_assignments \\
+test\_reassign\_route       & SDK-метод reassign\_route \\
+\hline
+\multicolumn{2}{|l|}{\textit{test\_monitoring\_client.py}} \\
+\hline
+test\_send\_telemetry       & SDK-метод send\_telemetry \\
+test\_get\_agent\_status    & SDK-метод get\_agent\_status \\
+test\_get\_available\_agents & SDK-метод get\_available\_agents \\
+test\_create\_alert         & SDK-метод create\_alert \\
+\hline
+\multicolumn{2}{|l|}{\textit{test\_integration.py}} \\
+\hline
+test\_full\_flow            & E2E: телеметрия → создание миссии → план \\
+\hline
+\end{tabularx}
+\end{table}
+
+\subsection{Запуск тестов и результаты}
+
+\begin{lstlisting}[style=bash, caption={Запуск тестов}]
+# Coordination Service
+cd coordination_service
+APP_ENV=testing pytest tests/ -v
+
+# Monitoring Service
+cd monitoring_service
+APP_ENV=testing pytest tests/ -v
+
+# Интеграционные тесты
+cd tests
+pytest . -v
+\end{lstlisting}
+
+Итоговый результат: \textbf{46 тестов прошли успешно} (\texttt{46 passed}).
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Python SDK клиент}
+
+\subsection{Структура клиентской библиотеки}
+
+Клиентская библиотека расположена в папке \texttt{client/} и состоит из трёх
+модулей:
+
+\begin{itemize}
+    \item \texttt{models.py} --- Pydantic-модели данных (зеркало серверных схем);
+    \item \texttt{coordination\_client.py} --- клиент \texttt{CoordinationClient};
+    \item \texttt{monitoring\_client.py} --- клиент \texttt{MonitoringClient}.
+\end{itemize}
+
+Оба клиента реализуют паттерн асинхронного контекстного менеджера (async context
+manager), инкапсулируют сессию HTTPX и предоставляют типизированные методы для
+каждого эндпоинта.
+
+\subsection{CoordinationClient}
+
+\begin{lstlisting}[caption={client/coordination\_client.py (фрагмент)}]
+class CoordinationClient:
+    """Async Python SDK client for the Coordination Service."""
+
+    def __init__(self, base_url: str = "http://localhost:8001"):
+        self._base_url = base_url.rstrip("/")
+        self._client: Optional[httpx.AsyncClient] = None
+
+    async def __aenter__(self) -> "CoordinationClient":
+        self._client = httpx.AsyncClient(
+            base_url=self._base_url, timeout=30.0
+        )
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb) -> None:
+        if self._client:
+            await self._client.aclose()
+
+    async def create_mission(
+        self,
+        incident_type: str,
+        location: str,
+        priority: str,
+        required_agents: int = 1,
+    ) -> MissionModel:
+        resp = await self.client.post(
+            "/api/v1/missions",
+            json={
+                "incident_type": incident_type,
+                "location": location,
+                "priority": priority,
+                "required_agents": required_agents,
+            },
+        )
+        resp.raise_for_status()
+        return MissionModel(**resp.json())
+
+    async def plan_mission(self, mission_id: int) -> list[SearchZoneModel]:
+        resp = await self.client.post(
+            f"/api/v1/missions/{mission_id}/plan"
+        )
+        resp.raise_for_status()
+        return [SearchZoneModel(**z) for z in resp.json()]
+
+    async def get_assignments(
+        self, mission_id: int
+    ) -> list[AssignmentModel]:
+        resp = await self.client.get(
+            f"/api/v1/missions/{mission_id}/assignments"
+        )
+        resp.raise_for_status()
+        return [AssignmentModel(**a) for a in resp.json()]
+
+    async def reassign_route(
+        self, route_id: int, new_agent_id: int, reason: str
+    ) -> TaskReassignmentModel:
+        resp = await self.client.patch(
+            f"/api/v1/routes/{route_id}/reassign",
+            json={"new_agent_id": new_agent_id, "reason": reason},
+        )
+        resp.raise_for_status()
+        return TaskReassignmentModel(**resp.json())
+\end{lstlisting}
+
+\subsection{Пример использования SDK}
+
+\begin{lstlisting}[caption={Использование CoordinationClient}]
+import asyncio
+from client.coordination_client import CoordinationClient
+from client.monitoring_client import MonitoringClient
+
+async def main():
+    # Регистрация агента через Monitoring SDK
+    async with MonitoringClient("http://localhost:8002") as mon:
+        await mon.send_telemetry(
+            agent_id=1,
+            battery_level=85.0,
+            link_status="ONLINE",
+            health_state="HEALTHY",
+            mission_status="PENDING",
+        )
+        agents = await mon.get_available_agents()
+        print(f"Доступно агентов: {len(agents)}")
+
+    # Создание и планирование миссии через Coordination SDK
+    async with CoordinationClient("http://localhost:8001") as coord:
+        mission = await coord.create_mission(
+            incident_type="FIRE",
+            location="Sector A, Building 5",
+            priority="HIGH",
+            required_agents=2,
+        )
+        print(f"Создана миссия #{mission.id}, статус: {mission.status}")
+
+        zones = await coord.plan_mission(mission.id)
+        print(f"Спланировано зон: {len(zones)}")
+
+        assignments = await coord.get_assignments(mission.id)
+        for a in assignments:
+            print(f"  Зона {a.zone_code} -> агент {a.agent_name}")
+
+asyncio.run(main())
+\end{lstlisting}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Конфигурация окружений}
+
+\subsection{Система загрузки конфигурации}
+
+Выбор окружения осуществляется через переменную среды \texttt{APP\_ENV}.
+Класс \texttt{Settings} из \texttt{pydantic-settings} автоматически загружает
+соответствующий \texttt{.env}-файл:
+
+\begin{lstlisting}[caption={coordination\_service/app/config.py}]
+APP_ENV = os.getenv("APP_ENV", "development")
+
+_ENV_FILES = {
+    "development": ".env.development",
+    "testing":     ".env.testing",
+    "production":  ".env.production",
+}
+
+def _resolve_env_file() -> str | None:
+    filename = _ENV_FILES.get(APP_ENV, ".env.development")
+    path = Path(filename)
+    return str(path) if path.exists() else None
+
+class Settings(BaseSettings):
+    APP_ENV: str = "development"
+    DATABASE_URL: str = "postgresql+asyncpg://..."
+    DATABASE_ECHO: bool = False
+    DATABASE_POOL_SIZE: int = 5
+    DATABASE_MAX_OVERFLOW: int = 10
+    MONITORING_SERVICE_URL: str = "http://localhost:8002"
+    LOG_LEVEL: str = "INFO"
+    DEBUG: bool = False
+    CORS_ORIGINS: str = "*"
+
+    model_config = {
+        "env_file": _resolve_env_file(),
+        "extra": "ignore",
+    }
+
+settings = Settings()
+\end{lstlisting}
+
+\subsection{Файлы конфигурации окружений}
+
+\subsubsection{Development (.env.development)}
+
+\begin{lstlisting}[style=bash, caption={coordination\_service/.env.development}]
+# Coordination Service — Development
+APP_ENV=development
+
+DATABASE_URL=postgresql+asyncpg://coord_user:coord_pass@localhost:5433/coordination_db
+DATABASE_ECHO=true
+DATABASE_POOL_SIZE=5
+DATABASE_MAX_OVERFLOW=5
+
+MONITORING_SERVICE_URL=http://localhost:8002
+
+LOG_LEVEL=DEBUG
+DEBUG=true
+CORS_ORIGINS=*
+\end{lstlisting}
+
+\subsubsection{Testing (.env.testing)}
+
+\begin{lstlisting}[style=bash, caption={coordination\_service/.env.testing}]
+# Coordination Service — Testing
+APP_ENV=testing
+
+DATABASE_URL=sqlite+aiosqlite:///./test_coordination.db
+DATABASE_ECHO=false
+DATABASE_POOL_SIZE=2
+DATABASE_MAX_OVERFLOW=0
+
+MONITORING_SERVICE_URL=http://localhost:8002
+
+LOG_LEVEL=WARNING
+DEBUG=false
+CORS_ORIGINS=*
+\end{lstlisting}
+
+Ключевое отличие тестового окружения: SQLite вместо PostgreSQL для полной
+изоляции тестов без зависимости от внешней СУБД.
+
+\subsubsection{Production (.env.production)}
+
+\begin{lstlisting}[style=bash, caption={coordination\_service/.env.production}]
+# Coordination Service — Production
+APP_ENV=production
+
+DATABASE_URL=postgresql+asyncpg://coord_user:${COORD_DB_PASSWORD}@coord_db:5432/coordination_db
+DATABASE_ECHO=false
+DATABASE_POOL_SIZE=20
+DATABASE_MAX_OVERFLOW=30
+
+MONITORING_SERVICE_URL=http://monitoring_service:8000
+
+LOG_LEVEL=WARNING
+DEBUG=false
+CORS_ORIGINS=${CORS_ORIGINS}
+\end{lstlisting}
+
+Продакшен-конфигурация отличается: отключён SQL-echo, увеличен пул соединений
+(20/30), используются переменные окружения для секретов.
+
+\subsection{Сравнительная таблица конфигураций}
+
+\begin{table}[H]
+\centering
+\caption{Параметры окружений}
+\begin{tabularx}{\textwidth}{|l|X|X|X|}
+\hline
+\textbf{Параметр} & \textbf{Development} & \textbf{Testing} & \textbf{Production} \\
+\hline
+База данных      & PostgreSQL           & SQLite (memory)  & PostgreSQL \\
+\hline
+DATABASE\_ECHO   & true                 & false            & false \\
+\hline
+Pool size        & 5                    & 2                & 20 \\
+\hline
+LOG\_LEVEL       & DEBUG                & WARNING          & WARNING \\
+\hline
+DEBUG            & true                 & false            & false \\
+\hline
+CORS\_ORIGINS    & *                    & *                & domain-specific \\
+\hline
+\end{tabularx}
+\end{table}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Docker Compose и контейнеризация}
+
+\subsection{Базовая конфигурация}
+
+Файл \texttt{docker-compose.yml} определяет пять сервисов:
+
+\begin{lstlisting}[style=yaml, caption={docker-compose.yml (фрагмент)}]
+services:
+  coord_db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: coordination_db
+      POSTGRES_USER: coord_user
+      POSTGRES_PASSWORD: coord_pass
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U coord_user -d coordination_db"]
+      interval: 5s
+      retries: 5
+    networks:
+      - rescuecoord_net
+
+  coordination_service:
+    build:
+      context: ./coordination_service
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8000"
+    environment:
+      DATABASE_URL: postgresql+asyncpg://coord_user:coord_pass@coord_db:5432/coordination_db
+      MONITORING_SERVICE_URL: http://monitoring_service:8000
+    depends_on:
+      coord_db:
+        condition: service_healthy
+    networks:
+      - rescuecoord_net
+\end{lstlisting}
+
+\subsection{Оверрайды для окружений}
+
+Продакшен-оверрайд (\texttt{docker-compose.prod.yml}) закрывает порты БД,
+включает \texttt{restart: always} и использует env-переменные для секретов:
+
+\begin{lstlisting}[style=yaml, caption={docker-compose.prod.yml}]
+services:
+  coord_db:
+    environment:
+      POSTGRES_PASSWORD: ${COORD_DB_PASSWORD:-coord_pass_secure}
+    ports: []    # закрыть порты в продакшене
+
+  coordination_service:
+    environment:
+      APP_ENV: production
+      DATABASE_ECHO: "false"
+      DATABASE_POOL_SIZE: "20"
+      LOG_LEVEL: WARNING
+      DEBUG: "false"
+      CORS_ORIGINS: ${CORS_ORIGINS:-https://your-domain.com}
+    restart: always
+\end{lstlisting}
+
+\subsection{Команды запуска}
+
+\begin{lstlisting}[style=bash, caption={Запуск системы в разных окружениях}]
+# Разработка
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+
+# Тестирование
+docker compose -f docker-compose.yml -f docker-compose.test.yml up --build
+
+# Продакшен
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+\end{lstlisting}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Фронтенд (React + TypeScript)}
+
+\subsection{Стек и структура}
+
+Фронтенд реализован на React 18 + Vite + TypeScript с использованием
+Tailwind CSS v4 и компонентов shadcn/ui (на базе Radix UI).
+В контейнере фронтенд раздаётся через nginx с proxy-правилами на
+оба микросервиса.
+
+\begin{lstlisting}[style=bash, caption={Структура frontend/src/}]
+frontend/src/
+├── api/
+│   ├── types.ts              # TypeScript-типы (зеркало Pydantic-схем)
+│   ├── coordinationApi.ts    # HTTP-клиент Coordination Service
+│   └── monitoringApi.ts      # HTTP-клиент Monitoring Service
+├── components/
+│   ├── Dashboard.tsx         # Главная панель (агенты + миссии)
+│   ├── ui/                   # shadcn/ui компоненты
+│   └── ...
+└── App.tsx
+\end{lstlisting}
+
+\subsection{Подключение к API}
+
+\begin{lstlisting}[caption={frontend/src/api/coordinationApi.ts (фрагмент)}]
+const BASE = "/api/coord";
+
+export const coordinationApi = {
+  async getMission(id: number): Promise<MissionDetail> {
+    const res = await fetch(`${BASE}/api/v1/missions/${id}`);
+    if (!res.ok) throw new Error(`Mission ${id} not found`);
+    return res.json();
+  },
+
+  async createMission(data: MissionCreate): Promise<Mission> {
+    const res = await fetch(`${BASE}/api/v1/missions`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) throw new Error("Failed to create mission");
+    return res.json();
+  },
+
+  async planMission(id: number): Promise<SearchZone[]> {
+    const res = await fetch(`${BASE}/api/v1/missions/${id}/plan`, {
+      method: "POST",
+    });
+    if (!res.ok) throw new Error("Failed to plan mission");
+    return res.json();
+  },
+};
+\end{lstlisting}
+
+\subsection{Конфигурация nginx proxy}
+
+Nginx перенаправляет запросы фронтенда на соответствующие сервисы:
+
+\begin{lstlisting}[style=bash, caption={frontend/nginx.conf (proxy-блоки)}]
+location /api/coord/ {
+    proxy_pass http://coordination_service:8000/;
+}
+
+location /api/monitor/ {
+    proxy_pass http://monitoring_service:8000/;
+}
+\end{lstlisting}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Демонстрация работы системы}
+
+\subsection{Инициализация демонстрационных данных}
+
+Для наполнения системы тестовыми данными разработан скрипт
+\texttt{seed\_agents.py}. Скрипт регистрирует трёх агентов через телеметрию и
+планирует существующие миссии:
+
+\begin{lstlisting}[caption={seed\_agents.py (фрагмент)}]
+async def register_agents():
+    agents = [
+        {"agent_id": 1, "battery_level": 85.0, "name": "Alpha-1"},
+        {"agent_id": 2, "battery_level": 80.0, "name": "Bravo-2"},
+        {"agent_id": 3, "battery_level": 75.0, "name": "Charlie-3"},
+    ]
+    async with httpx.AsyncClient() as client:
+        for agent in agents:
+            resp = await client.post(
+                "http://localhost:8002/api/v1/telemetry",
+                json={**agent, "link_status": "ONLINE",
+                      "health_state": "HEALTHY",
+                      "mission_status": "PENDING"},
+            )
+            print(f"Agent {agent['agent_id']}: {resp.status_code}")
+\end{lstlisting}
+
+\subsection{Результат запуска}
+
+После выполнения \texttt{python seed\_agents.py} система возвращает:
+
+\begin{lstlisting}[style=bash]
+Registering agents...
+Agent 1 (Alpha-1): 201
+Agent 2 (Bravo-2): 201
+Agent 3 (Charlie-3): 201
+
+Available agents: 3
+  - Agent 1: ONLINE, battery=85.0%, HEALTHY
+  - Agent 2: ONLINE, battery=80.0%, HEALTHY
+  - Agent 3: ONLINE, battery=75.0%, HEALTHY
+
+Planning existing missions...
+Mission 1 (FIRE, Sector A): IN_PROGRESS
+  Assignments:
+    ZONE-A -> Agent-1
+    ZONE-B -> Agent-2
+\end{lstlisting}
+
+\subsection{Проверка работоспособности сервисов}
+
+\begin{lstlisting}[style=bash, caption={Health-check запросы}]
+curl http://localhost:8001/health
+# {"status": "ok", "service": "coordination"}
+
+curl http://localhost:8002/health
+# {"status": "ok", "service": "monitoring"}
+\end{lstlisting}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Заключение}
+
+В ходе выполнения лабораторной работы была разработана и развёрнута
+микросервисная система \textbf{RescueCoord} --- система координации
+поисково-спасательных операций.
+
+В рамках работы были выполнены следующие задачи:
+
+\begin{enumerate}
+    \item \textbf{Разработаны два микросервиса}: Coordination Service и
+          Monitoring Service на основе FastAPI с асинхронным
+          SQLAlchemy 2.0 и PostgreSQL 16.
+
+    \item \textbf{Реализован полный REST API}: 6 эндпоинтов в каждом сервисе
+          с Pydantic v2 валидацией, обработкой ошибок и документированием через
+          OpenAPI (Swagger UI).
+
+    \item \textbf{Написаны 46 модульных и интеграционных тестов} с
+          использованием pytest + pytest-asyncio, HTTPX AsyncClient и
+          SQLite in-memory. Все тесты проходят успешно.
+
+    \item \textbf{Создана клиентская библиотека} Python SDK (\texttt{CoordinationClient},
+          \texttt{MonitoringClient}) с типизированными методами для всех
+          эндпоинтов.
+
+    \item \textbf{Настроены три окружения}: development (PostgreSQL + DB echo +
+          DEBUG), testing (SQLite + WARNING), production (PostgreSQL + max pool
+          + секреты через env). Для каждого окружения созданы \texttt{.env}-файл
+          и Docker Compose override.
+
+    \item \textbf{Разработан React-фронтенд} с подключением к реальному API
+          через HTTPX/fetch и nginx reverse proxy.
+
+    \item \textbf{Система контейнеризирована} в Docker Compose (5 контейнеров)
+          с поддержкой multi-environment деплоя.
+\end{enumerate}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section*{Список использованных инструментов и технологий}
+\addcontentsline{toc}{section}{Список использованных инструментов и технологий}
+
+\begin{enumerate}
+    \item Python 3.12 --- \url{https://www.python.org/}
+    \item FastAPI 0.115 --- \url{https://fastapi.tiangolo.com/}
+    \item SQLAlchemy 2.0 --- \url{https://docs.sqlalchemy.org/}
+    \item Pydantic v2 --- \url{https://docs.pydantic.dev/}
+    \item PostgreSQL 16 --- \url{https://www.postgresql.org/}
+    \item pytest + pytest-asyncio --- \url{https://pytest.org/}
+    \item HTTPX --- \url{https://www.python-httpx.org/}
+    \item Docker + Docker Compose --- \url{https://docs.docker.com/}
+    \item React 18 + Vite --- \url{https://vitejs.dev/}
+    \item Tailwind CSS v4 --- \url{https://tailwindcss.com/}
+    \item nginx --- \url{https://nginx.org/}
+    \item Alembic --- \url{https://alembic.sqlalchemy.org/}
+\end{enumerate}
+
+\end{document}

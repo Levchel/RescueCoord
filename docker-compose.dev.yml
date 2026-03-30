@@ -1,0 +1,27 @@
+# docker-compose.dev.yml — Development overrides
+# Usage: docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+services:
+  coordination_service:
+    environment:
+      APP_ENV: development
+      DATABASE_URL: postgresql+asyncpg://coord_user:coord_pass@coord_db:5432/coordination_db
+      DATABASE_ECHO: "true"
+      LOG_LEVEL: DEBUG
+      DEBUG: "true"
+      CORS_ORIGINS: "*"
+      MONITORING_SERVICE_URL: http://monitoring_service:8000
+    volumes:
+      - ./coordination_service:/app
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+
+  monitoring_service:
+    environment:
+      APP_ENV: development
+      DATABASE_URL: postgresql+asyncpg://monitor_user:monitor_pass@monitoring_db:5432/monitoring_db
+      DATABASE_ECHO: "true"
+      LOG_LEVEL: DEBUG
+      DEBUG: "true"
+      CORS_ORIGINS: "*"
+    volumes:
+      - ./monitoring_service:/app
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

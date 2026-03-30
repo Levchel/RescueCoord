@@ -1,0 +1,40 @@
+# docker-compose.prod.yml — Production overrides
+# Usage: docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+services:
+  coord_db:
+    environment:
+      POSTGRES_PASSWORD: ${COORD_DB_PASSWORD:-coord_pass_secure}
+    ports: []  # no exposed ports in production
+
+  monitoring_db:
+    environment:
+      POSTGRES_PASSWORD: ${MONITOR_DB_PASSWORD:-monitor_pass_secure}
+    ports: []
+
+  coordination_service:
+    environment:
+      APP_ENV: production
+      DATABASE_URL: postgresql+asyncpg://coord_user:${COORD_DB_PASSWORD:-coord_pass_secure}@coord_db:5432/coordination_db
+      DATABASE_ECHO: "false"
+      DATABASE_POOL_SIZE: "20"
+      DATABASE_MAX_OVERFLOW: "30"
+      LOG_LEVEL: WARNING
+      DEBUG: "false"
+      CORS_ORIGINS: ${CORS_ORIGINS:-https://your-domain.com}
+      MONITORING_SERVICE_URL: http://monitoring_service:8000
+    restart: always
+
+  monitoring_service:
+    environment:
+      APP_ENV: production
+      DATABASE_URL: postgresql+asyncpg://monitor_user:${MONITOR_DB_PASSWORD:-monitor_pass_secure}@monitoring_db:5432/monitoring_db
+      DATABASE_ECHO: "false"
+      DATABASE_POOL_SIZE: "20"
+      DATABASE_MAX_OVERFLOW: "30"
+      LOG_LEVEL: WARNING
+      DEBUG: "false"
+      CORS_ORIGINS: ${CORS_ORIGINS:-https://your-domain.com}
+    restart: always
+
+  frontend:
+    restart: always

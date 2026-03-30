@@ -1,0 +1,85 @@
+services:
+  coord_db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: coordination_db
+      POSTGRES_USER: coord_user
+      POSTGRES_PASSWORD: coord_pass
+    ports:
+      - "5433:5432"
+    volumes:
+      - coord_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U coord_user -d coordination_db"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - rescuecoord_net
+
+  monitoring_db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: monitoring_db
+      POSTGRES_USER: monitor_user
+      POSTGRES_PASSWORD: monitor_pass
+    ports:
+      - "5434:5432"
+    volumes:
+      - monitoring_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U monitor_user -d monitoring_db"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - rescuecoord_net
+
+  coordination_service:
+    build:
+      context: ./coordination_service
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8000"
+    environment:
+      DATABASE_URL: postgresql+asyncpg://coord_user:coord_pass@coord_db:5432/coordination_db
+      MONITORING_SERVICE_URL: http://monitoring_service:8000
+    depends_on:
+      coord_db:
+        condition: service_healthy
+    networks:
+      - rescuecoord_net
+
+  monitoring_service:
+    build:
+      context: ./monitoring_service
+      dockerfile: Dockerfile
+    ports:
+      - "8002:8000"
+    environment:
+      DATABASE_URL: postgresql+asyncpg://monitor_user:monitor_pass@monitoring_db:5432/monitoring_db
+    depends_on:
+      monitoring_db:
+        condition: service_healthy
+    networks:
+      - rescuecoord_net
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - coordination_service
+      - monitoring_service
+    networks:
+      - rescuecoord_net
+
+volumes:
+  coord_data:
+  monitoring_data:
+
+networks:
+  rescuecoord_net:
+    driver: bridge
