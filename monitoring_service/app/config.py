@@ -26,6 +26,8 @@ class Settings(BaseSettings):
     DATABASE_POOL_SIZE: int = 5
     DATABASE_MAX_OVERFLOW: int = 10
 
+    OTEL_ENDPOINT: str | None = None
+
     LOG_LEVEL: str = "INFO"
     DEBUG: bool = False
     CORS_ORIGINS: str = "*"

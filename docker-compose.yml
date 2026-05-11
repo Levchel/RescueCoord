@@ -44,6 +44,7 @@ services:
     environment:
       DATABASE_URL: postgresql+asyncpg://coord_user:coord_pass@coord_db:5432/coordination_db
       MONITORING_SERVICE_URL: http://monitoring_service:8000
+      OTEL_ENDPOINT: http://otel-collector:4318
     depends_on:
       coord_db:
         condition: service_healthy
@@ -58,6 +59,7 @@ services:
       - "8002:8000"
     environment:
       DATABASE_URL: postgresql+asyncpg://monitor_user:monitor_pass@monitoring_db:5432/monitoring_db
+      OTEL_ENDPOINT: http://otel-collector:4318
     depends_on:
       monitoring_db:
         condition: service_healthy
@@ -76,9 +78,60 @@ services:
     networks:
       - rescuecoord_net
 
+  # ── Observability stack ────────────────────────────────────────────────────
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.115.0
+    command: ["--config=/etc/otel-collector-config.yml"]
+    volumes:
+      - ./observability/otel-collector-config.yml:/etc/otel-collector-config.yml:ro
+    ports:
+      - "4317:4317"   # OTLP gRPC
+      - "4318:4318"   # OTLP HTTP
+      - "8889:8889"   # Prometheus scrape-endpoint
+    networks:
+      - rescuecoord_net
+
+  prometheus:
+    image: prom/prometheus:v2.54.1
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.enable-lifecycle"
+    volumes:
+      - ./observability/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    depends_on:
+      - otel-collector
+      - coordination_service
+      - monitoring_service
+    networks:
+      - rescuecoord_net
+
+  grafana:
+    image: grafana/grafana:11.3.0
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+    volumes:
+      - ./observability/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./observability/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "3001:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - rescuecoord_net
+
 volumes:
   coord_data:
   monitoring_data:
+  prometheus_data:
+  grafana_data:
 
 networks:
   rescuecoord_net:

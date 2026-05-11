@@ -28,6 +28,8 @@ class Settings(BaseSettings):
 
     MONITORING_SERVICE_URL: str = "http://localhost:8002"
 
+    OTEL_ENDPOINT: str | None = None
+
     LOG_LEVEL: str = "INFO"
     DEBUG: bool = False
     CORS_ORIGINS: str = "*"

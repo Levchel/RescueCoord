@@ -78,7 +78,7 @@ jobs:
 
       - name: Deploy notification
         run: |
-          echo "✅ Docker images built and pushed to ${{ env.REGISTRY }}"
+          echo "Docker images built and pushed to ${{ env.REGISTRY }}"
           echo "Services deployed:"
           echo "  - ghcr.io/${{ github.repository }}/coordination_service:latest"
           echo "  - ghcr.io/${{ github.repository }}/monitoring_service:latest"
