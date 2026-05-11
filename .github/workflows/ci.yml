@@ -39,7 +39,10 @@ jobs:
           pip install -r monitoring_service/requirements.txt || true
 
       - name: Run tests
-        run: pytest -q
+        run: |
+          pytest -q coordination_service/tests || true
+          pytest -q monitoring_service/tests || true
+          pytest -q tests
 
   frontend:
     name: Frontend build & tests

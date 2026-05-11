@@ -6,3 +6,6 @@ pydantic==2.11.*
 pydantic-settings==2.9.*
 alembic==1.15.*
 httpx==0.28.*
+pytest==7.4.*
+pytest-asyncio==0.23.*
+aiosqlite==0.20.*
