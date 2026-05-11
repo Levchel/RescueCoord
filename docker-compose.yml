@@ -81,7 +81,7 @@ services:
   # ── Observability stack ────────────────────────────────────────────────────
 
   otel-collector:
-    image: otel/opentelemetry-collector-contrib:0.108.0
+    image: otel/opentelemetry-collector-contrib:latest
     command: ["--config=/etc/otel-collector-config.yml"]
     volumes:
       - ./observability/otel-collector-config.yml:/etc/otel-collector-config.yml:ro
@@ -93,7 +93,7 @@ services:
       - rescuecoord_net
 
   prometheus:
-    image: prom/prometheus:v2.49.2
+    image: prom/prometheus:latest
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
       - "--storage.tsdb.path=/prometheus"
@@ -111,7 +111,7 @@ services:
       - rescuecoord_net
 
   grafana:
-    image: grafana/grafana:11.0.0
+    image: grafana/grafana:latest
     environment:
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
