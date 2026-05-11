@@ -37,7 +37,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r coordination_service/requirements.txt || true
           pip install -r monitoring_service/requirements.txt || true
-          pip install pytest
 
       - name: Run tests
         run: pytest -q
