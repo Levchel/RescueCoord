@@ -1,4 +1,4 @@
-FROM node:24-alpine AS builder
+FROM node:20-slim AS builder
 WORKDIR /app
 COPY package*.json ./
 # npm ci может быть нестабилен в Docker; используем install с очисткой кэша
