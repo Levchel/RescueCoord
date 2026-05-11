@@ -65,8 +65,9 @@ async def register_agents(mon: MonitoringClient) -> None:
               f"battery={battery:.0f}% | ONLINE | PENDING")
 
     available = await mon.get_available_agents()
-    print(f"\n  {GREEN}✓ Доступно агентов: {len(available)}{RESET}")
+    print(f"\n  {GREEN} Доступно агентов: {len(available)}{RESET}")
 
+"#880707"
 
 # ─── Шаг 2+3: создание и планирование миссии ──────────────────────────────────
 async def create_and_plan_mission(coord: CoordinationClient) -> list[AssignmentModel]:
@@ -79,7 +80,7 @@ async def create_and_plan_mission(coord: CoordinationClient) -> list[AssignmentM
         priority="HIGH",
         required_agents=REQUIRED,
     )
-    print(f"  {GREEN}✓ Миссия #{mission.id} создана{RESET}")
+    print(f"  {GREEN} Миссия #{mission.id} создана{RESET}")
     print(f"    Тип: {mission.incident_type}")
     print(f"    Район: {mission.location}")
     print(f"    Приоритет: {mission.priority}")
@@ -89,7 +90,7 @@ async def create_and_plan_mission(coord: CoordinationClient) -> list[AssignmentM
     print(f"  Запрос доступных агентов из Monitoring Service...")
 
     zones = await coord.plan_mission(mission.id)
-    print(f"  {GREEN}✓ Спланировано подзон: {len(zones)}{RESET}")
+    print(f"  {GREEN} Спланировано подзон: {len(zones)}{RESET}")
 
     assignments = await coord.get_assignments(mission.id)
     print(f"\n  Распределение подзон по агентам:")
@@ -143,7 +144,7 @@ async def fly_agent(
         bar  = "█" * math.ceil(battery / 100 * 10) + "░" * (10 - math.ceil(battery / 100 * 10))
         print(f"  {label} шаг {step}/{STEPS} | "
               f"({lat:.4f}, {lon:.4f}) | "
-              f"⚡[{bar}]{battery:.1f}% | "
+              f"[{bar}]{battery:.1f}% | "
               f"{speed} m/s | {link}")
 
         if step < STEPS:
@@ -159,14 +160,13 @@ async def fly_agent(
         link_status="ONLINE",
         mission_status="COMPLETED",
     )
-    print(f"  {label} {GREEN}{BOLD}✓ подзона {zone_code} выполнена{RESET}"
+    print(f"  {label} {GREEN}{BOLD} подзона {zone_code} выполнена{RESET}"
           f" | итог battery={battery:.1f}%")
 
 
 # ─── Главный сценарий ─────────────────────────────────────────────────────────
 async def main() -> None:
     print(f"\n{BOLD}{'═' * 55}")
-    print(f"  RescueCoord — полная демонстрация сценария")
     print(f"{'═' * 55}{RESET}")
 
     async with MonitoringClient(MONITOR_URL) as mon, \
